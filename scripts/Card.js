@@ -1,5 +1,7 @@
 export class Card {
-  #showImagePopupImageContainer = document.querySelector(".popup__image-container");
+  #showImagePopupImageContainer = document.querySelector(
+    ".popup__image-container"
+  );
   #showImagePopupImageCaption = document.querySelector(".popup__image-caption");
   #showImagePopupElement = document.querySelector(".popup_show-image");
 
@@ -11,15 +13,15 @@ export class Card {
 
   renderCard() {
     document.querySelector(".places").prepend(this.#createCard());
-  };
+  }
 
-   #deleteCard(event) {
-    event.target.closest(".place").remove()
-  };
+  #deleteCard(event) {
+    event.target.closest(".place").remove();
+  }
 
   #toggleLike(event) {
-    event.target.classList.toggle("place__heart-button_active")
-  };
+    event.target.classList.toggle("place__heart-button_active");
+  }
 
   #showPicture() {
     this.#showImagePopupImageContainer.setAttribute("src", this.link);
@@ -28,9 +30,8 @@ export class Card {
     this.#showImagePopupImageCaption.textContent = this.name;
 
     window.openPopup(this.#showImagePopupElement);
-  };
+  }
 
-// Функции работы с карточками
   #createCard() {
     const card = document.querySelector(this.selector).content.cloneNode(true);
 
@@ -49,7 +50,5 @@ export class Card {
     title.textContent = this.name;
 
     return card;
-  };
-
-
+  }
 }

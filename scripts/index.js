@@ -1,5 +1,5 @@
-import {Card} from "./Card.js";
-import {FormValidator} from "./FormValidator.js";
+import { Card } from "./Card.js";
+import { FormValidator } from "./FormValidator.js";
 
 //  Переменные
 const initialCards = [
@@ -134,12 +134,16 @@ initialCards.forEach((initialCard) =>
   new Card(initialCard.name, initialCard.link).renderCard()
 );
 
-Array.from(document.querySelectorAll(".popup__input-content")).forEach((formElement) =>
-  new FormValidator({
-    inputSelector: ".popup__field",
-    submitButtonSelector: ".popup__submit-button",
-    inactiveButtonClass: "popup__submit-button_inactive",
-    inputErrorClass: "popup__field_invalid",
-    errorClass: "popup__field-error_active",
-  }, formElement).enableValidation()
+Array.from(document.querySelectorAll(".popup__input-content")).forEach(
+  (formElement) =>
+    new FormValidator(
+      {
+        inputSelector: ".popup__field",
+        submitButtonSelector: ".popup__submit-button",
+        inactiveButtonClass: "popup__submit-button_inactive",
+        inputErrorClass: "popup__field_invalid",
+        errorClass: "popup__field-error_active",
+      },
+      formElement
+    ).enableValidation()
 );
