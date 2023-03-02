@@ -60,9 +60,6 @@ const openEditAuthorPopupButton = document.querySelector(
 );
 const addPlaceButton = document.querySelector(".profile__add-button");
 
-// Контейнер карточек
-const places = document.querySelector(".places");
-
 // Функция закрытия модального окна по нажатию на Escape
 const closePopupByEscape = (evt) => {
   if (evt.key === "Escape") {
@@ -107,7 +104,7 @@ const openPopupAddPlace = () => {
 };
 const addPlace = (event) => {
   event.preventDefault();
-  new Card(placeInputElement.value, linkInputElement.value, places).renderCard();
+  new Card(placeInputElement.value, linkInputElement.value).renderCard();
   closePopup(addPlacePopupElement);
   addPlaceFormElement.reset();
 };
