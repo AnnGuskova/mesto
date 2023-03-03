@@ -1,36 +1,13 @@
 import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
-
-//  Переменные
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
+import {initialCards, formOptions} from "./constants.js";
+import {openPopup, closePopup} from "./utils.js";
 
 // Модальные окна
 const popups = document.querySelectorAll(".popup");
+
+// Контейнеры полей ввода
+const inputContents = document.querySelectorAll(".popup__input-content");
 
 //  Элементы модального окна редактирования автора
 const editAuthorPopupElement = document.querySelector(".popup_edit_author");
@@ -60,27 +37,10 @@ const openEditAuthorPopupButton = document.querySelector(
 );
 const addPlaceButton = document.querySelector(".profile__add-button");
 
-// Функция закрытия модального окна по нажатию на Escape
-const closePopupByEscape = (evt) => {
-  if (evt.key === "Escape") {
-    const openedPopup = document.querySelector(".popup_opened");
-    if (openedPopup !== null) {
-      closePopup(openedPopup);
-    }
-  }
-};
-
-// Функция открытия модального окна
-window.openPopup = (element) => {
-  element.classList.add("popup_opened");
-  document.addEventListener("keydown", closePopupByEscape);
-};
-
-// Функция закрытия модального окна
-const closePopup = (element) => {
-  element.classList.remove("popup_opened");
-  document.removeEventListener("keydown", closePopupByEscape);
-};
+// Функция отображения карточки
+const renderCard = (card) => {
+  document.querySelector(".places").prepend(card);
+}
 
 // Функции для модального окна редактирования автора
 const openPopupEditAuthor = () => {
@@ -104,7 +64,7 @@ const openPopupAddPlace = () => {
 };
 const addPlace = (event) => {
   event.preventDefault();
-  new Card(placeInputElement.value, linkInputElement.value).renderCard();
+  renderCard(new Card(placeInputElement.value, linkInputElement.value).createCard());
   closePopup(addPlacePopupElement);
   addPlaceFormElement.reset();
 };
@@ -131,19 +91,13 @@ popups.forEach((popup) => {
 });
 
 initialCards.forEach((initialCard) =>
-  new Card(initialCard.name, initialCard.link).renderCard()
+  renderCard(new Card(initialCard.name, initialCard.link).createCard())
 );
 
-Array.from(document.querySelectorAll(".popup__input-content")).forEach(
+Array.from(inputContents).forEach(
   (formElement) =>
     new FormValidator(
-      {
-        inputSelector: ".popup__field",
-        submitButtonSelector: ".popup__submit-button",
-        inactiveButtonClass: "popup__submit-button_inactive",
-        inputErrorClass: "popup__field_invalid",
-        errorClass: "popup__field-error_active",
-      },
+      formOptions,
       formElement
     ).enableValidation()
 );

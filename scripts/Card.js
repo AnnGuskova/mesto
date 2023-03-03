@@ -1,3 +1,5 @@
+import {openPopup} from "./utils.js";
+
 export class Card {
   #showImagePopupImageContainer = document.querySelector(
     ".popup__image-container"
@@ -5,14 +7,14 @@ export class Card {
   #showImagePopupImageCaption = document.querySelector(".popup__image-caption");
   #showImagePopupElement = document.querySelector(".popup_show-image");
 
-  constructor(name, link, selector = "#card") {
-    this.name = name;
-    this.link = link;
-    this.selector = selector;
-  }
+  #name;
+  #link;
+  #selector;
 
-  renderCard() {
-    document.querySelector(".places").prepend(this.#createCard());
+  constructor(name, link, selector = "#card") {
+    this.#name = name;
+    this.#link = link;
+    this.#selector = selector;
   }
 
   #deleteCard(event) {
@@ -24,20 +26,22 @@ export class Card {
   }
 
   #showPicture() {
-    this.#showImagePopupImageContainer.setAttribute("src", this.link);
-    this.#showImagePopupImageContainer.setAttribute("alt", this.name);
+    this.#showImagePopupImageContainer.setAttribute("src", this.#link);
+    this.#showImagePopupImageContainer.setAttribute("alt", this.#name);
 
-    this.#showImagePopupImageCaption.textContent = this.name;
+    this.#showImagePopupImageCaption.textContent = this.#name;
 
-    window.openPopup(this.#showImagePopupElement);
+    openPopup(this.#showImagePopupElement);
   }
 
-  #createCard() {
-    const card = document.querySelector(this.selector).content.cloneNode(true);
+  #getCardTemplate() {
+    return document.querySelector(this.#selector).content.cloneNode(true);
+  }
 
+  #setEventListeners(card) {
     const image = card.querySelector(".place__picture");
-    image.setAttribute("src", this.link);
-    image.setAttribute("alt", this.name);
+    image.setAttribute("src", this.#link);
+    image.setAttribute("alt", this.#name);
     image.addEventListener("click", () => this.#showPicture());
 
     const deleteButton = card.querySelector(".place__trash-button");
@@ -45,9 +49,15 @@ export class Card {
 
     const likeButton = card.querySelector(".place__heart-button");
     likeButton.addEventListener("click", this.#toggleLike);
+  }
+
+  createCard() {
+    const card = this.#getCardTemplate();
+
+    this.#setEventListeners(card);
 
     const title = card.querySelector(".place__header");
-    title.textContent = this.name;
+    title.textContent = this.#name;
 
     return card;
   }
